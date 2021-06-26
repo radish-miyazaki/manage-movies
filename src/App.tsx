@@ -1,25 +1,63 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import {BrowserRouter as Router, Switch, Link, Route} from "react-router-dom";
+import {Movies} from "./components/Movies";
+import {Home} from "./components/Home";
+import {Admin} from "./components/Admin";
+import MovieShow from "./components/MovieShow";
+import Genres from "./components/Genres";
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="container">
+
+        <div className="row">
+          <h1 className="mt-3">
+            Go Watch a Movie!
+          </h1>
+          <hr className="mb-3" />
+        </div>
+
+        <div className="row">
+          <div className="col-md-2">
+            <nav>
+              <ul className="list-group">
+                <li className="list-group-item">
+                  <Link to={'/'}>Home</Link>
+                </li>
+                <li className="list-group-item">
+                  <Link to={'/movies'}>Movies</Link>
+                </li>
+                <li className="list-group-item">
+                  <Link to={'/genres'}>Genres</Link>
+                </li>
+                <li className="list-group-item">
+                  <Link to={'/admin'}>Manage Catalogue</Link>
+                </li>
+              </ul>
+            </nav>
+          </div>
+
+          <div className="col-md-10">
+            <Switch>
+              <Route exact path={'/movies'}>
+                <Movies />
+              </Route>
+              <Route path={'/movies/:id'} component={MovieShow} />
+              <Route exact path={'/genres'}>
+                <Genres />
+              </Route>
+              <Route exact path={'/admin'}>
+                <Admin />
+              </Route>
+              <Route exact path={'/'}>
+                <Home />
+              </Route>
+            </Switch>
+          </div>
+        </div>
+      </div>
+    </Router>
   );
 }
 
