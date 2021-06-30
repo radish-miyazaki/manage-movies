@@ -5,6 +5,8 @@ import {Home} from "./components/Home";
 import {Admin} from "./components/Admin";
 import MovieShow from "./components/MovieShow";
 import Genres from "./components/Genres";
+import GenreShow from "./components/GenreShow";
+import MovieEdit from "./components/MovieEdit";
 
 const App = () => {
   return (
@@ -29,6 +31,9 @@ const App = () => {
                   <Link to={'/movies'}>Movies</Link>
                 </li>
                 <li className="list-group-item">
+                  <Link to={'/admin/movie/0'}>Add Movies</Link>
+                </li>
+                <li className="list-group-item">
                   <Link to={'/genres'}>Genres</Link>
                 </li>
                 <li className="list-group-item">
@@ -40,19 +45,13 @@ const App = () => {
 
           <div className="col-md-10">
             <Switch>
-              <Route exact path={'/movies'}>
-                <Movies />
-              </Route>
+              <Route exact path={'/movies'} component={Movies} />
               <Route path={'/movies/:id'} component={MovieShow} />
-              <Route exact path={'/genres'}>
-                <Genres />
-              </Route>
-              <Route exact path={'/admin'}>
-                <Admin />
-              </Route>
-              <Route exact path={'/'}>
-                <Home />
-              </Route>
+              <Route exact path={'/genres'} component={Genres} />
+              <Route exact path={'/genres/:id'} component={GenreShow} />
+              <Route exact path={'/admin/movie/:id'} component={MovieEdit} />
+              <Route exact path={'/admin'} component={Admin} />
+              <Route exact path={'/'} component={Home} />
             </Switch>
           </div>
         </div>

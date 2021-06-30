@@ -1,27 +1,29 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState} from 'react';
 import {Movie} from "../types/movie";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 
-export const Admin = () => {
+const GenreShow: React.FC<any> = (props) => {
+  const {id} = useParams<Record<string, string>>()
   const [movies, setMovies] = useState<Movie[]>([])
   const [isLoaded, setIsLoaded] = useState(false)
   const [error, setError] = useState('')
+  const genreName = props.location.state.genreName
 
   useEffect(() => {
     (
       async () => {
-        await axios.get('/movies')
+        await axios.get(`/genres/${id}`)
           .then(res => {
             setMovies(res.data.movies)
           })
-          .catch(err => {
+          .catch((err) => {
             setError(`Invalid response code: ${err.response.status}`)
           })
         setIsLoaded(true)
       }
     )()
-  },[])
+  },[id])
 
   if (error) {
     return (
@@ -35,17 +37,13 @@ export const Admin = () => {
     return <p>Loading...</p>
   }
 
-  return (
+  return  (
     <>
-      <h2>Manage Catalog</h2>
-      <hr/>
+      <h2>Genre: {genreName}</h2>
       <div className="list-group">
         {
-          movies.map(m => (
-            <Link key={m.id}
-                  to={`/admin/movie/${m.id}`}
-                  className="list-group-item list-group-item-action"
-            >
+          movies?.map((m) => (
+            <Link to={`/movies/${m.id}`} key={m.id} className="list-group-item list-group-item-action">
               {m.title}
             </Link>
           ))
@@ -53,4 +51,6 @@ export const Admin = () => {
       </div>
     </>
   )
-}
+};
+
+export default GenreShow;

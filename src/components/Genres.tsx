@@ -4,7 +4,6 @@ import {Genre} from "../types/movie";
 import { Link } from 'react-router-dom';
 
 const Genres = () => {
-
   const [genres, setGenres] = useState<Genre[]>([])
   const [isLoaded, setIsLoaded] = useState(false)
   const [error ,setError] = useState('')
@@ -40,17 +39,20 @@ const Genres = () => {
     <>
       <h2>Genres</h2>
 
-      <ul>
+      <div className="list-group">
         {
           genres.map((genre, index) => (
-            <li key={index}>
-              <Link to={`/genres/${genre.id}`}>
-                {genre.genre_name}
-              </Link>
-            </li>
+            <Link to={{
+              pathname: `/genres/${genre.id}`,
+              state: {
+                genreName: genre.genre_name
+              }
+            }} key={index} className="list-group-item list-group-item-action">
+              {genre.genre_name}
+            </Link>
           ))
         }
-      </ul>
+      </div>
     </>
   );
 };
