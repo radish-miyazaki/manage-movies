@@ -10,19 +10,22 @@ import MovieEdit from "./components/MovieEdit";
 import Login from "./components/Login";
 
 const App = () => {
-  const [jwt, setJWT] = useState('')
+  let tokenStr = window.localStorage.getItem("jwt")
+  const [token, setToken] = useState<string>(tokenStr ? tokenStr : '')
   const [loginLink, setLoginLink] = useState<ReactElement>(null!)
 
-  const handleJWTChange = (jwt: string) => setJWT(jwt)
-  const logout = () => setJWT('')
+  const logout = () => {
+    window.localStorage.removeItem("jwt")
+    setToken('')
+  }
 
   useEffect(() => {
-    if (jwt === '') {
-      setLoginLink(<Link to="/login" className="">Login</Link>)
+    if (token === '') {
+      setLoginLink(<Link to="/login">Login</Link>)
     } else {
       setLoginLink(<Link to="logout" onClick={logout}>Logout</Link>)
     }
-  }, [jwt])
+  }, [token])
 
   return (
     <Router>
@@ -53,7 +56,7 @@ const App = () => {
                   <Link to={'/admin/movie/0'}>Add Movies</Link>
                 </li>
                 {
-                  jwt !== '' && (
+                  token !== '' && (
                     <>
                       <li className="list-group-item">
                         <Link to={'/genres'}>Genres</Link>
@@ -73,9 +76,7 @@ const App = () => {
               <Route
                 exact
                 path={'/login'}
-                component={(props: any) => (
-                  <Login {...props} handleJWTChange={handleJWTChange}/>
-                )}
+                component={() => <Login setToken={setToken} />}
               />
               <Route exact path={'/movies'} component={Movies} />
               <Route path={'/movies/:id'} component={MovieShow} />
