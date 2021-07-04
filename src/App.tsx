@@ -1,5 +1,5 @@
 import React, {ReactElement, useEffect, useState} from 'react';
-import {BrowserRouter as Router, Switch, Link, Route} from "react-router-dom";
+import {BrowserRouter as Router, Switch, Link, Route, RouteComponentProps} from "react-router-dom";
 import {Movies} from "./components/Movies";
 import {Home} from "./components/Home";
 import {Admin} from "./components/Admin";
@@ -82,7 +82,13 @@ const App = () => {
               <Route path={'/movies/:id'} component={MovieShow} />
               <Route exact path={'/genres'} component={Genres} />
               <Route exact path={'/genres/:id'} component={GenreShow} />
-              <Route exact path={'/admin/movie/:id'} component={MovieEdit} />
+              <Route
+                exact
+                path={'/admin/movie/:id'}
+                component={(props: {token: string} & RouteComponentProps<{id: string}>) => (
+                  <MovieEdit {...props} token={token} />
+                )}
+              />
               <Route exact path={'/admin'} component={Admin} />
               <Route exact path={'/'} component={Home} />
             </Switch>

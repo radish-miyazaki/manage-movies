@@ -30,7 +30,7 @@ const formSelectOptions: FormSelectOption[] = [
   {id: "NC17", value: "NC17"},
 ]
 
-type PageProps = {} & RouteComponentProps<{id: string}>;
+type PageProps = {token: string} & RouteComponentProps<{id: string}>;
 
 const MovieEdit: React.FC<PageProps> = (props) => {
   const [movie, setMovie] = useState<Movie>(initMovieState)
@@ -39,6 +39,7 @@ const MovieEdit: React.FC<PageProps> = (props) => {
   const [errorFields, setErrorFields] = useState<string[]>([])
   const [alert, setAlert] = useState<AlertProps>({alertType: "d-none", message: ""})
   const id = Number(props.match.params.id)
+  const {token} = props
   const history = useHistory()
 
   useEffect(() => {
@@ -86,6 +87,10 @@ const MovieEdit: React.FC<PageProps> = (props) => {
       mpaa_rating: movie.mpaa_rating,
       rating: movie.rating,
       description: movie.description,
+    }, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
     })
       .then(() => {
         history.push({pathname: "/admin"})
