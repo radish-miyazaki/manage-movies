@@ -1,14 +1,24 @@
 import React, {useEffect, useState} from "react";
 import {Movie} from "../types/movie";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 
-export const Admin = () => {
+type AdminProps = {
+  token: string;
+}
+
+export const Admin = (props: AdminProps) => {
   const [movies, setMovies] = useState<Movie[]>([])
   const [isLoaded, setIsLoaded] = useState(false)
   const [error, setError] = useState('')
+  const history = useHistory()
+  const {token} = props
 
   useEffect(() => {
+    if (token === "") {
+      history.push({pathname: '/login'})
+      return
+    }
     (
       async () => {
         await axios.get('/movies')
@@ -21,7 +31,7 @@ export const Admin = () => {
         setIsLoaded(true)
       }
     )()
-  },[])
+  },[token, history])
 
   if (error) {
     return (

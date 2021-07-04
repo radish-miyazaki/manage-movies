@@ -43,6 +43,11 @@ const MovieEdit: React.FC<PageProps> = (props) => {
   const history = useHistory()
 
   useEffect(() => {
+    if (token === '') {
+      history.push({pathname: '/login'})
+      return
+    }
+
     if (id !== 0) {
       (
         async () => {
@@ -61,7 +66,7 @@ const MovieEdit: React.FC<PageProps> = (props) => {
       setMovie(initMovieState)
     }
     setIsLoaded(true)
-  }, [id])
+  }, [id, token, history])
 
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault()
@@ -119,7 +124,11 @@ const MovieEdit: React.FC<PageProps> = (props) => {
         {
           label: 'Yes',
           onClick: async () => {
-            await axios.delete(`/admin/movie/delete/${movie.id}`)
+            await axios.delete(`/admin/movie/delete/${movie.id}`, {
+              headers: {
+                Authorization: `Bearer ${token}`
+              }
+            })
               .then(() => {
                 history.push({pathname: "/admin"})
               })

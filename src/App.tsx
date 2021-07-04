@@ -53,13 +53,13 @@ const App = () => {
                   <Link to={'/movies'}>Movies</Link>
                 </li>
                 <li className="list-group-item">
-                  <Link to={'/admin/movie/0'}>Add Movies</Link>
+                  <Link to={'/genres'}>Genres</Link>
                 </li>
                 {
                   token !== '' && (
                     <>
                       <li className="list-group-item">
-                        <Link to={'/genres'}>Genres</Link>
+                        <Link to={'/admin/movie/0'}>Add Movies</Link>
                       </li>
                       <li className="list-group-item">
                         <Link to={'/admin'}>Manage Catalogue</Link>
@@ -89,7 +89,11 @@ const App = () => {
                   <MovieEdit {...props} token={token} />
                 )}
               />
-              <Route exact path={'/admin'} component={Admin} />
+              <Route
+                exact
+                path={'/admin'}
+                component={() => <Admin token={token} />}
+              />
               <Route exact path={'/'} component={Home} />
             </Switch>
           </div>
