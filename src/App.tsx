@@ -8,6 +8,8 @@ import Genres from "./components/Genres";
 import GenreShow from "./components/GenreShow";
 import MovieEdit from "./components/MovieEdit";
 import Login from "./components/Login";
+import GraphQL from "./components/GraphQL";
+import {MovieShowGraphQL} from "./components/MovieShowGraphQL";
 
 const App = () => {
   let tokenStr = window.localStorage.getItem("jwt")
@@ -67,6 +69,11 @@ const App = () => {
                     </>
                   )
                 }
+                <li className="list-group-item">
+                  <Link to="/graphql">
+                    GraphQL
+                  </Link>
+                </li>
               </ul>
             </nav>
           </div>
@@ -95,6 +102,8 @@ const App = () => {
                 component={() => <Admin token={token} />}
               />
               <Route exact path={'/'} component={Home} />
+              <Route exact path={'/graphql'} component={GraphQL} />
+              <Route path={'/graphql/movies/:id'} component={MovieShowGraphQL} />
             </Switch>
           </div>
         </div>
